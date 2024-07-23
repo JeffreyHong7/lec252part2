@@ -1,8 +1,26 @@
 import express from "express";
 import bodyParser from "body-parser";
+import pg from "pg";
 
 const app = express();
 const port = 3000;
+const client = new pg.Client({
+  user: "postgres",
+  password: "Jalapeno.70",
+  host: "localhost",
+  port: 5432,
+  database: "world",
+});
+
+client.connect();
+let quiz = {};
+client.query("SELECT * FROM flags", (err, res) => {
+  if (err) {
+    console.error("Error executing query", err.stack);
+  } else {
+    quiz = res.rows;
+  }
+});
 
 let totalCorrect = 0;
 
